@@ -1,5 +1,14 @@
+var line = d3.line()
+			 .x(function(d, i) { return xscale(i + 1); })
+			 .y(function(d) { return pyscale(d["winScore"]) })
 
 
+svg.append("path")
+   .datum(dataset)
+   .attr("class", "line")
+   .attr("d", line);
+
+console.log("shit");
 
 function rescale() {
 	var newMax = scaleSwitch == 0 ? 10 : maxWinMeanDiff + 1;
@@ -55,10 +64,6 @@ function rescale() {
 	   		return scaleSwitch == 0 ? 1 : 0;
 	   })
 
-	// draw lines to connect winning movies
-	var valueline = d3.line()
-					  .x(function(d) { return x() })
-					  .y(function(d) {});
 }
 
 

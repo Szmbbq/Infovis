@@ -111,7 +111,7 @@ svg.selectAll(".loser")
 	.attr("cy", function(d, i) { return nyscale(d["lowScore"] - d["mean"]); });
 
 
-/// draw other movies
+// draw other movies
 svg.selectAll(".others")
    .data(dataset)
    .enter()
