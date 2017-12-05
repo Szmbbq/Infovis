@@ -110,7 +110,7 @@ function firstDesign(dataset) {
 		.style("fill", "red")
 		.attr("r", 7)
 		.attr("cx", function(d, i) { return xscale(i + 1) + 1; })
-		.attr("cy", function(d, i) { return pyscale(d["winScore"] - d["mean"]); });
+		.attr("cy", function(d, i) { if(d['year'] == "1985" || d['year'] == "1994"){console.log(d["winScore"], d["mean"])} return pyscale(d["winScore"] - d["mean"]); });
 
 	// draw high score movies
 	svg.selectAll(".highScore")
@@ -222,6 +222,14 @@ function hideLowMean() {
 
 
 function rescale() {
+	// check if dataset has been changed
+	var newDataset = document.getElementById("dataset").value;
+	if(newDataset != currentData) {
+		currentData = newDataset;
+		dataset = currentData == "actor" ? leading_actor : leading_actress;
+		redraw(dataset);
+	}
+
 	var newMax = scaleSwitch == 0 ? 10 : maxWinMeanDiff + 1;
 	var newMin = scaleSwitch == 0 ? minScore - 1 : 0;
 	var numOfTicks = scaleSwitch == 0 ? 10 : 5;
@@ -241,7 +249,14 @@ function rescale() {
 	   .duration(1000)
 	   .attr("cy", function(d, i) { 
 	    	return scaleSwitch == 0 ? pyscale(d["winScore"] - d["mean"]) : pyscale(d["winScore"]); 
-	    });
+	    })
+	   .on('start', function() {
+	   		// remove the previous trend group every time rescaling
+	   		svg.selectAll(".trendGroup")
+	   		   .transition()
+	   		   .delay((d, i) => i*20)
+	   		   .remove();
+	   });
 
 	// rescale highScore movie points
 	svg.selectAll(".highScore")
@@ -281,14 +296,9 @@ function rescale() {
 	   .style("opacity", function(d) {
 	   		return scaleSwitch == 0 ? 1 : 0;
 	   }).on('end', function() {
-	   		// after transition, redraw trendgroup
-	   		svg.selectAll(".trendGroup").remove();
+	   		// after transition, redraw trendgroup;
 	   		trendGroup();
 	   });
-
-	// redraw trend group
-	// svg.selectAll(".trendGroup").remove();
-	// trendGroup();
 
 }
 
@@ -371,6 +381,13 @@ function trendGroup() {
 
 
 function update() {
+	// check if dataset has been changed
+	var newDataset = document.getElementById("dataset").value;
+	if(newDataset != currentData) {
+		currentData = newDataset;
+		dataset = currentData == "actor" ? leading_actor : leading_actress;
+		redraw(dataset);
+	}
 	// get opacity value for winning movies
 	var newOpacity = document.getElementById("winner").value;
 	// update display of winner movies
@@ -439,5 +456,17 @@ function sigmoid(t) {
 
 function changeScale() {
 	rescale();
-
 }
+
+function redraw(dataset) {
+	// remove all elements in the svg
+	d3.select("svg").selectAll("*")
+	   .remove();
+
+	// redraw
+	firstDesign(dataset);
+}
+
+
+
+
