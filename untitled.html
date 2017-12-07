@@ -1,117 +1,111 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Infomation Visualization Final Project</title>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <title>Infomation Visualization Final Project</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
+
 <body>
-	Select dataset <select id="dataset">
+    Select dataset <select id="dataset">
 		<option value = "actor">Actor in a Leading Role</option>
 		<option value = "actress">Actress in a Leading Role</option>
-	</select>
-	Winners <select id="winner">
+	</select> Winners <select id="winner">
+		<option value = 1>Show</option>
+		<option value = 0>Hide</option>
+	</select> High Scores <select id="highScores">
+		<option value = 1>Show</option>
+		<option value = 0>Hide</option>
+	</select> Low Scores <select id="lowScores">
+		<option value = 1>Show</option>
+		<option value = 0>Hide</option>
+	</select> Other Movies <select id="others">
 		<option value = 1>Show</option>
 		<option value = 0>Hide</option>
 	</select>
-	High Scores <select id="highScores">
-		<option value = 1>Show</option>
-		<option value = 0>Hide</option>
-	</select>
-	Low Scores <select id="lowScores">
-		<option value = 1>Show</option>
-		<option value = 0>Hide</option>
-	</select>
-	Other Movies <select id="others">
-		<option value = 1>Show</option>
-		<option value = 0>Hide</option>
-	</select>
-	</select>
-	High-Mean Difference <select id="HMDiff">
+    </select>
+    High-Mean Difference <select id="HMDiff">
 		<option value = 0>Hide</option>
 		<option value = 1>Show</option>
 	</select>
-	</select>
-	Low-Mean Difference <select id="LMDiff">
+    </select>
+    Low-Mean Difference <select id="LMDiff">
 		<option value = 0>Hide</option>
 		<option value = 1>Show</option>
-	</select>
-	Trend Group <select id="trendGroup">
+	</select> Trend Group <select id="trendGroup">
 		<option value = "none">Hide</option>
 		<option value = "block">Show</option>
 	</select>
-	<button id="updateBtn" onclick="update()">Update Display</button>
-	<script type="text/javascript" src="func/firstDesign.js"></script>
-	<script type="text/javascript" src="func/preprocessing.js"></script>
-	<script type="text/javascript">
-		// setup width and height of the svg canvas
-		var width = 1000;
-		var height = 300;
+    <button id="updateBtn" onclick="update()">Update Display</button>
+    <script type="text/javascript" src="func/firstDesign.js"></script>
+    <script type="text/javascript" src="func/preprocessing.js"></script>
+    <script type="text/javascript">
+        // setup width and height of the svg canvas
+        var width = 1000;
+        var height = 300;
 
-		// flags for control buttons
-		var scaleSwitch = 0;
-		var currentData = document.getElementById("dataset").value;
+        // flags for control buttons
+        var scaleSwitch = 0;
+        var currentData = document.getElementById("dataset").value;
 
-		// stats
-		var years, minScore, differenceData, maxWinMeanDiff, maxLowMeanDiff;
+        // stats
+        var years, minScore, differenceData, maxWinMeanDiff, maxLowMeanDiff;
 
-		// scalers
-		var xscale, pyscale, nyscale, yscale;
+        // scalers
+        var xscale, pyscale, nyscale, yscale;
 
-		// axes
-		var xaxis, pyaxis, nyaxis, yaxis;
+        // axes
+        var xaxis, pyaxis, nyaxis, yaxis;
 
-		// are axes already append to the svg (initial as false)
-		var axesExist = false;
+        // are axes already append to the svg (initial as false)
+        var axesExist = false;
 
-		// create a svg tag
-		var svg = d3.select("body")
-					.append("svg")
-					.attr("width", width)
-					.attr("height", 2 * height);
+        // create a svg tag
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 2 * height);
 
-		// process the data
-		const leading_actor_dataset = [];
-		const leading_actress_dataset = [];
-		
-		var leading_actor = [];
-		var leading_actress = [];
+        // process the data
+        const leading_actor_dataset = [];
+        const leading_actress_dataset = [];
 
-
-		var shit = "shit";
-	</script>
-
-	<button id="rescaleBtn" onclick="rescale()">Rescale</button>
-
-	<script type="text/javascript">
-		
-		// open csv file for the first design
-		d3.csv("./data/result1.csv", function(data) {
-			
-			dataProcessing(data);
-			leading_actor_dataset.forEach(function(d) {
-				leading_actor.push(d);
-			});
-			leading_actor = leading_actor.slice(31);
-
-			leading_actress_dataset.forEach(function(d) {
-				leading_actress.push(d);
-			});
-			leading_actress = leading_actress.slice(21);
-			console.log(leading_actress);
-
-			// ------------ data processing finished -----------
-			
-
-			// draw the first design, target dataset as param
-			firstDesign(leading_actor);
-			trendGroup();
-			update();
-		});
-
-		// open csv file for the second design
+        var leading_actor = [];
+        var leading_actress = [];
 
 
+        var shit = "shit";
+    </script>
 
-	</script>
+    <button id="rescaleBtn" onclick="rescale()">Rescale</button>
+
+    <script type="text/javascript">
+        // open csv file for the first design
+        d3.csv("./data/result1.csv", function(data) {
+
+            dataProcessing(data);
+            leading_actor_dataset.forEach(function(d) {
+                leading_actor.push(d);
+            });
+            leading_actor = leading_actor.slice(31);
+
+            leading_actress_dataset.forEach(function(d) {
+                leading_actress.push(d);
+            });
+            leading_actress = leading_actress.slice(21);
+            console.log(leading_actress);
+
+            // ------------ data processing finished -----------
+
+
+            // draw the first design, target dataset as param
+            firstDesign(leading_actor);
+            trendGroup();
+            update();
+        });
+
+        // open csv file for the second design
+    </script>
 </body>
+
 </html>
